@@ -1,0 +1,36 @@
+.container {
+    background-color: cadetblue;
+    border-radius: 10px;
+    text-align: center;
+    width: 50%;
+    margin: 40px auto;
+    padding: 50px;
+}
+
+#testing {
+    display: none;
+    background-color: beige;
+}
+
+#start {
+    background-color: blue;
+    border: none;
+    color: lightgray;
+    padding: 10px;
+    border-radius: 5px;
+    font-size: 1.5rem;
+    margin: 30px;
+    box-shadow: 5px 5px gray;
+}
+
+#text {
+    text-align: left;
+    padding: 10px;
+}
+
+#textarea {
+    font-family:'Times New Roman', Times, serif;
+    font-size: 1rem;
+    padding: 8px;
+    width: 96%;
+}
