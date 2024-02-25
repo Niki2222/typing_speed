@@ -17,7 +17,7 @@ const paragraphs = [
 
 let intervalIdTime;
 let checkLettersIntervalId;
-let countSeconds = 20;
+let countSeconds = 60;
 let countChars = 0;
 let countWords = 0;
 let correctCharsInWord = 0;
@@ -72,14 +72,14 @@ function compareChars(event) {
                 ++countWords;
             }
             document.getElementById('words_no').innerText = countWords;
-            // console.log(correctCharsInWord, totalCharsInWord, countChars);
+            correctCharsInWord = 0;
+            totalCharsInWord = 0;
         }
     } else {
         coloredCharacters.push(-1);
         if (event.keyCode === BACKSPACE_KEY) {
             --countChars;
             --totalCharsInWord;
-            // console.log("backspace", countChars);
         } else {
             ++countChars;
             ++totalCharsInWord;
@@ -120,7 +120,6 @@ function compareChars(event) {
         document.getElementById('words_no').innerText = countWords;
         generateRandomText();
         document.getElementById('textarea').value += '\r\n';
-        console.log("new text generated");
         countChars = 0;
         correctCharsInWord = 0;
         totalCharsInWord = 0;
