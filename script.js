@@ -90,8 +90,6 @@ function compareChars(event) {
         let char = textContent[i];
         if (coloredCharacters.includes(i) && i !== -1) {
             newTextContent += '<span style="color: green;">' + char + '</span>';
-        } else if (coloredCharacters.includes(i)) {
-            newTextContent += '<span style="color: green;">' + char + '</span>';
         } else if (coloredCharacters.includes(-1)) {
             newTextContent += '<span style="color: red;">' + char + '</span>';
         } else {
