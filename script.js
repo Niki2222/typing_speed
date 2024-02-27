@@ -1,18 +1,9 @@
-// const paragraphs = [
-//     "Avocados are a fruit, not a vegetable. They're technically considered a single-seeded berry, believe it or not.",
-//     "Human teeth are the only part of the body that cannot heal themselves. Teeth are coated in enamel which is not a living tissue.",
-//     "There's a fruit that tastes like chocolate pudding. Can we get in on this? Apparently, there's a fruit native to Central and South America called black sapote that tastes like chocolate and sweet custard.",
-//     "Pigs can't look up into the sky. The anatomy of their spine and neck muscles limits their movement and restricts their head from being able to look upwards.",
-//     "One part of Istanbul is in Europe and the other is in Asia. Part of it neighbours Greece and Bulgaria (therefore sitting in Europe) and the other part neighbours Syria, Iran, and Iraq beyond Turkey’s borders (therefore classing as Asia). The Bosphorus Strait runs between them - a narrow body of water that connects the Black Sea to the Mediterranean Sea via the Sea of Marmara."
-// ];
-
 const paragraphs = [
-    "ana are mere.",
-    "mai are si banane.",
-    "dar eu vreau pere.",
-    "maria are cirese.",
-    "alin are visine.",
-    "marius vrea portocale."
+    "Avocados are a fruit, not a vegetable. They're technically considered a single-seeded berry, believe it or not.",
+    "Human teeth are the only part of the body that cannot heal themselves. Teeth are coated in enamel which is not a living tissue.",
+    "There's a fruit that tastes like chocolate pudding. Can we get in on this? Apparently, there's a fruit native to Central and South America called black sapote that tastes like chocolate and sweet custard.",
+    "Pigs can't look up into the sky. The anatomy of their spine and neck muscles limits their movement and restricts their head from being able to look upwards.",
+    "One part of Istanbul is in Europe and the other is in Asia. Part of it neighbours Greece and Bulgaria, therefore sitting in Europe and the other part neighbours Syria, Iran, and Iraq beyond Turkey’s borders, therefore classing as Asia. The Bosphorus Strait runs between them - a narrow body of water that connects the Black Sea to the Mediterranean Sea via the Sea of Marmara."
 ];
 
 let intervalIdTime;
@@ -22,7 +13,6 @@ let countChars = 0;
 let countWords = 0;
 let correctCharsInWord = 0;
 let totalCharsInWord = 0;
-// const SHIFT_KEY = 16;
 const SPACE_KEY = 32;
 const BACKSPACE_KEY = 8;
 let randomText;
@@ -52,7 +42,7 @@ function startTimeCount() {
 }
 
 function generateRandomText() {
-    randomText = paragraphs[Math.floor(Math.random() * paragraphs.length)];
+    randomText = paragraphs[Math.floor(Math.random() * paragraphs.length)].toLocaleLowerCase();
     coloredCharacters = [];
     textElement.innerHTML = randomText.split('').map(char => '<span>' + char + '</span>').join('');
 }
@@ -61,7 +51,6 @@ function compareChars(event) {
     let textLength = randomText.length;
     let textContent = randomText.split('');
     let newTextContent = '';
-
     if (randomText[countChars] === event.key) {
         coloredCharacters.push(countChars);
         ++correctCharsInWord;
@@ -78,39 +67,35 @@ function compareChars(event) {
     } else {
         coloredCharacters.push(-1);
         if (event.keyCode === BACKSPACE_KEY) {
+            coloredCharacters.pop();
+            coloredCharacters.pop();
             --countChars;
             --totalCharsInWord;
         } else {
             ++countChars;
             ++totalCharsInWord;
         }
-    }   
+    }  
+    console.log("la final", totalCharsInWord, correctCharsInWord); 
+    colorChars(textContent, newTextContent);
+    newParagraph(textLength);
+}
 
+function colorChars(textContent, newTextContent) {
     for (let i = 0; i < textContent.length; ++i) {
         let char = textContent[i];
-        if (coloredCharacters.includes(i) && i !== -1) {
+        if (coloredCharacters[i] === i) {
             newTextContent += '<span style="color: green;">' + char + '</span>';
-        } else if (coloredCharacters.includes(-1)) {
+        } else if (coloredCharacters[i] === -1) {
             newTextContent += '<span style="color: red;">' + char + '</span>';
         } else {
             newTextContent += '<span>' + char + '</span>';
         }
     }
-
-    // for (let countChars = 0; countChars < textContent.length;) {
-    //     let char = textContent[countChars];
-    //     if (char === event.key) {
-    //         newTextContent += '<span style="color: green;">' + char + '</span>';
-    //         ++countChars;
-    //     } else if (char !== event.key) {
-    //         newTextContent += '<span style="color: red;">' + char + '</span>';
-    //         ++countChars;
-    //     } else {
-    //         newTextContent += '<span>' + char + '</span>';
-    //     }
-    // }
     textElement.innerHTML = newTextContent;
+}
 
+function newParagraph(textLength) {
     if (countChars === textLength) {
         if (correctCharsInWord == totalCharsInWord) {
             ++countWords;
@@ -130,3 +115,6 @@ function endTest() {
         document.getElementById('textarea').blur(); 
     }
 }
+
+
+
