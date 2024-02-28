@@ -11,8 +11,6 @@ let checkLettersIntervalId;
 let countSeconds = 60;
 let countChars = 0;
 let countWords = 0;
-let correctCharsInWord = 0;
-let totalCharsInWord = 0;
 const SPACE_KEY = 32;
 const BACKSPACE_KEY = 8;
 let randomText;
@@ -46,37 +44,52 @@ function generateRandomText() {
     coloredCharacters = [];
     textElement.innerHTML = randomText.split('').map(char => '<span>' + char + '</span>').join('');
 }
-
+let countSpace = 0;
+let incorrectWords = 0;
+let isIncorrect = 0;
+const pushingSpace = 10000;
 function compareChars(event) {
     let textLength = randomText.length;
     let textContent = randomText.split('');
     let newTextContent = '';
-    if (randomText[countChars] === event.key) {
+    if (event.key === randomText[countChars]) {
         coloredCharacters.push(countChars);
-        ++correctCharsInWord;
-        ++totalCharsInWord;
         ++countChars;
         if (event.keyCode === SPACE_KEY) { 
-            if (correctCharsInWord == totalCharsInWord) {
-                ++countWords;
+            ++countSpace;
+            if (isIncorrect == 1) {
+                ++incorrectWords;
+                isIncorrect = 0;
             }
+            coloredCharacters.pop();
+            coloredCharacters.push(pushingSpace);
+            countWords = countSpace - incorrectWords;
             document.getElementById('words_no').innerText = countWords;
-            correctCharsInWord = 0;
-            totalCharsInWord = 0;
         }
-    } else {
+    } else if (event.keyCode !== BACKSPACE_KEY && randomText[countChars] !== event.key){
         coloredCharacters.push(-1);
-        if (event.keyCode === BACKSPACE_KEY) {
-            coloredCharacters.pop();
-            coloredCharacters.pop();
-            --countChars;
-            --totalCharsInWord;
-        } else {
-            ++countChars;
-            ++totalCharsInWord;
+        isIncorrect = 1;
+        ++countChars;
+    } else if (event.keyCode === BACKSPACE_KEY) {
+        if (coloredCharacters[coloredCharacters.length - 1] === -1) {
+            isIncorrect = 0;
+            --incorrectWords;
+            if (incorrectWords < 0) {
+                incorrectWords = 0;
+            }
+        } else if (coloredCharacters[coloredCharacters.length - 1] === pushingSpace) {
+            --countSpace;
+            // to check!!!
+            countWords = countSpace - incorrectWords;
+            document.getElementById('words_no').innerText = countWords;
+        } 
+        coloredCharacters.pop();
+        --countChars;
+        if (countChars < 0) {
+            countChars = 0;
         }
     }  
-    console.log("la final", totalCharsInWord, correctCharsInWord); 
+    console.log("la final",countSpace, incorrectWords); // to check
     colorChars(textContent, newTextContent);
     newParagraph(textLength);
 }
@@ -97,15 +110,11 @@ function colorChars(textContent, newTextContent) {
 
 function newParagraph(textLength) {
     if (countChars === textLength) {
-        if (correctCharsInWord == totalCharsInWord) {
-            ++countWords;
-        }
+        countWords = countSpace - incorrectWords;
         document.getElementById('words_no').innerText = countWords;
         generateRandomText();
         document.getElementById('textarea').value += '\r\n';
         countChars = 0;
-        correctCharsInWord = 0;
-        totalCharsInWord = 0;
     }
 }
 
